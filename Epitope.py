@@ -5,7 +5,6 @@ Note:
 """
 
 # Imports
-import numpy
 import Utils
 import random
 
@@ -42,7 +41,6 @@ class Epitope:
         child = Epitope(parent.dna_sequence, parent, generation)
 
         child.mutate()
-
         return child
 
     # Function to create random epitope

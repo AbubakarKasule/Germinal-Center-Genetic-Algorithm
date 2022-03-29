@@ -5,11 +5,8 @@ Note: Realistically this should be an entire B-cell but we are abstracting to ju
 """
 
 # Imports
-import numpy
 import Utils
 import random
-
-
 
 
 # Antibody class
@@ -17,12 +14,22 @@ class Antibody:
     # Static constant
     MUTATION_RATE = 0.1    # One in Five will mutate by default
     DNA_SEQUENCE_LENGTH = 24
+    
+    # Static variable
+    ID = 1
 
     def __init__(self, dna_sequence, parent1, parent2, generation):
         self.generation = generation
         self.parents = (parent1, parent2)
         self.dna_sequence = dna_sequence
         self.bit_string = Utils.dna_to_bitstring(dna_sequence)
+        self.id = Antibody.ID
+
+        Antibody.ID += 1
+
+    def __str__(self) -> str:
+        return str("N" + str(self.id) + "G" + str(self.generation))
+        # return str("Node #" + str(self.id) + " Generation #" + str(self.generation))
 
     # Run on children after creation
     def mutate(self):
@@ -35,7 +42,7 @@ class Antibody:
                 new_dna += base
 
         self.dna_sequence = new_dna
-        self.bit_string = Utils.dna_to_bitstring(self.dna_sequence)
+        self.bit_string = Utils.dna_to_bitstring(new_dna)
 
     # Function to handle reproduction and crossover
     @staticmethod
@@ -77,8 +84,11 @@ class Antibody:
             curr_len = len(result)
 
             while(curr_len < Antibody.DNA_SEQUENCE_LENGTH):
-                result += epitope_dna[curr_len]
+                result += random_dna[curr_len]
                 curr_len += 1
+
+                if result == epitope_dna:
+                    print("SOMETHING IS VERY WRONG: AB84")
         
         else:
             # Conserved region is in the back
@@ -89,23 +99,21 @@ class Antibody:
             curr_len = len(result)
 
             while(curr_len < cronserved_region_threshold):
-                result += epitope_dna[curr_len]
+                result += random_dna[curr_len]
                 curr_len += 1
 
             result += str(epitope_dna[cronserved_region_threshold:])
 
+            if result == epitope_dna:
+                print("SOMETHING IS VERY WRONG: AB101")
+
         if (len(result) != Antibody.DNA_SEQUENCE_LENGTH):
-            print("SOMETHING IS VERY WRONG: AB98")
+            print("SOMETHING IS VERY WRONG: AB104")
+
+        
 
         return Antibody(result, None, None, 0)
 
     
 
-      
-
-
-
-# brreding functions
-
-    
 
