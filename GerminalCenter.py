@@ -104,11 +104,14 @@ class GerminalCenter:
 
     # Graphics functions
     def generate_fitness_to_generation_graph(self, filename):
-        gens = [str(x + 1) for x in range(len(self.performance_history))]
+        gens = [int(x + 1) for x in range(len(self.performance_history))]
 
         plt.xlabel("Generation")
         plt.ylabel("Fitness")
         plt.title("Fitness Comparison between Generations")
+        #plt.xticks(gens, gens[::2])
+
+        plt.gca().xaxis.set_major_locator(plt.MultipleLocator(100))
 
         plt.plot(gens, self.performance_history)
         plt.savefig(filename)
